@@ -1,8 +1,17 @@
+# Lab Overview
+The experimental experince of RNA-seq processing can be extremely complex, and take up a lot of space depending on the data being analyzed. The use of the GEMmaker program is critical, as it allows the creation of a complex workflow in massive-scale RNA-seq analyses. The GEMmaker program will contruct GEMs, Gene Expression count Matrices, which can show expression levels, unqiue reads, and various other useful experimental data. In order to do this, it is necessary to use SRA data. The SRA, Sequence Read Archive, is the **largest publicy available repository of high-throughput sequenceing data**. In this lab, we will aim to use human SRA experiments and the human genome to create a GEM, and then process the GEM and analyze our findings.
+
+# Learning Objectives
+- [ ] Understand the concept of GEM creation, including the necessary software to create a GEM
+- [ ] Learn the processes that can be done to GEMs in order to analyze their data
+- [ ] Analyze a downstream workflow of your created GEM
+
 # Instructions for Human SRA GEM
 **The overall goal of this project is to create a GEM from Human SRA files, and then normalize and analyze it**
 
-1. First, research SRA experiments from the human genome within the NCBI sequence read archive. Some SRA experiments may have more than one run, all from the same study, which makes selections easier.
-2. The Identified study below (SRX000001) resulted in 10 different runs. For simplicity, the first 3 runs will be used to make the GEM, however further research can be done using all runs.
+First, research SRA experiments from the human genome within the NCBI sequence read archive. Some SRA experiments may have more than one run, all from the same study, which makes selections easier.
+
+The Identified study below (SRX000001) resulted in 10 different runs. **For simplicity, the first 3 runs will be used to make the GEM**, however further research can be done using all runs.
 
 | Study | Run Identifier | Description |
 | :-----------: | :-----------: | :-----------: |
@@ -15,5 +24,102 @@
 | SRX000001 | SRR000059 | Paired-end mapping reveals extensive structural variation in the human genome |
 | SRX000001 | SRR000063 | Paired-end mapping reveals extensive structural variation in the human genome |
 | SRX000001 | SRR000065 | Paired-end mapping reveals extensive structural variation in the human genome |
-3. Next, in order to utilize the SRA experiment into a GEM, first the human genome must be downloaded and indexed. The genome can be indexed using the kallisto mapping software (make sure singularity container software is also installed so the software doesn't have to be installed locally)
-4. Download the human genome: wget cdna.all.fa.gz
+
+### Creating a GEM
+
+1. Next, in order to utilize the SRA experiment into a GEM, there are a few programs that must be installed:
+
+    1. Install GEMmaker
+    
+    2. Install the **Nextflow**; *a workflow manager that can manage pipelines/workflows of different complexities*
+
+        -sudo apt update #Updates software repositories.
+        
+        -sudo apt install default-jre #Install Java
+        
+        -wget -qO- https://get.nextflow.io | bash #Compile nextflow program into one location
+        
+        -sudo cp nextflow /usr/local/bin #Adds nextflow to your PATH, change PATH command based on your path
+        
+        -nextflow #tests nextflow to confirm correct installation
+        
+    3. Install **Singularity**; *allows you to run containerized code, which contain software environments to run a code*
+    
+        -sudo apt update #Update the Linux software repositories
+        
+        -sudo apt-get install -y \build-essential \libseccomp-dev \pkg-config \squashfs-tools \cryptsetup #Install dependencies
+        
+        -export VERSION=1.16.6 OS=linux ARCH=amd64 #Install GO software, make sure to change based on operating system and versions released
+        
+        -wget -O /tmp/go${VERSION}.${OS}-${ARCH}.tar.gz \ https://dl.google.com/go/go${VERSION}.${OS}-${ARCH}.tar.gz
+        
+        -sudo tar -C /usr/local -xzf /tmp/go${VERSION}.${OS}-${ARCH}.tar.gz
+        
+        -echo 'export GOPATH=${HOME}/go' >> ~/.bashrc
+        
+        -echo 'export PATH=/usr/local/go/bin:${PATH}:${GOPATH}/bin' >> ~/.bashrc
+        
+        -source ~/.bashrc #load the changes to your path
+        
+        -go #check if GO software is successfully installed
+    4. Install **singularity container software**; *virtual containers of software environments*
+        
+        -git clone https://github.com/sylabs/singularity.git
+        
+        -cd singularity
+        
+        -./mconfig
+        
+        -make -C builddir
+        
+        -sudo make -C builddir install
+        
+        -source ~/.bashrc #load changes to your path
+        
+        -singularity #test if singularity is successfully installed
+
+2. Now that the necessary software is installed, it's important to create a working directory for GEMmaker, and test it. 
+    1. Create a working directory, for example called GEMmaker_runs. For this labs example purposes, this directory will be located in ~/Desktop/classroom/myfiles/GEMmaker_runs
+    
+        -cd ~/Desktop/classroom/myfiles
+        
+        -mkdir GEMmaker_runs
+        
+        -cd GEMmaker_runs
+        
+    2. Now, within your GEM working directory, run a test on GEMmaker. *The goal of this is to see a count of TMP gene expression matrix in the results section. As it is a fake genome and run just to test the program, the resulting GEMs will be very small, which can be seen using the command* ls -l *to list the line count/size.*
+        
+        -nextflow run systemsgenetics/gemmaker -profile test,singularity
+        
+        -cd results #check results for the expected files
+        
+        -cd ..
+        
+        -cd reports #look for a QC analysis of the SRA files
+
+3. Now, let's build the *Homo Sapiens* GEM. To start, the complete human cDNA genome must be downloaded. 
+    1. Download the human genome: wget Homo_sapiens.GRCh38.cdna.all.fa.gz
+    
+        -gunzip Homo_sapiens.GRCh38.cdna.all.fa #unzip the file
+        
+    2. Use singularity to index the file, and name the indexed file with *.indexed* for differentiation purposes 
+    
+        -singularity exec -B ${PWD} https://depot.galaxyproject.org/singularity/kallisto:0.46.2--h4f7b962_1 kallisto index -i Homo_sapiens.GRCh38.cdna.all.fa.indexed Homo_sapiens.GRCh38.cdna.all.fa
+        
+4. Input in the selected SRA run experiment identifiers.
+
+    - nano SRAs.txt #create a text file
+
+    - SRR000021
+    SRR000021
+    SRR000021 #input the SRR identifiers of the chosen individual runs
+    
+5. Build the GEM. GEMmaker used NCBI to access the needed datasets and runs nextflow. Results will be seen in the **results directory**. If wanting to process the other runs, the process can be changed by altering the experiment ID's.
+
+    -nextflow run systemsgenetics/gemmaker -profile singularity \
+--pipeline kallisto \
+--kallisto_index_path Homo_sapiens.GRCh38.cdna.all.fa.indexed \
+--sras SRAs.txt
+
+### Processing a GEM
+## Now that the GEM has been created using the selected SRA experiment runs, it is time to process our GEM in order to analyze it.
