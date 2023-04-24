@@ -25,7 +25,9 @@ The Identified study below (SRX000001) resulted in 10 different runs. **For simp
 | SRX000001 | SRR000063 | Paired-end mapping reveals extensive structural variation in the human genome |
 | SRX000001 | SRR000065 | Paired-end mapping reveals extensive structural variation in the human genome |
 
-### Creating a GEM
+
+## 
+## Creating a GEM
 
 1. Next, in order to utilize the SRA experiment into a GEM, there are a few programs that must be installed:
     
@@ -129,6 +131,7 @@ The Identified study below (SRX000001) resulted in 10 different runs. **For simp
     
     -head GEMmaker.GEM.TPM.human.txt
 
+## 
 ## Processing a GEM
 ### Now that the GEM has been created using the selected SRA experiment runs, it is time to prep our GEM in order to analyze it.
 
@@ -153,4 +156,6 @@ The Identified study below (SRX000001) resulted in 10 different runs. **For simp
     
     -python ~/Desktop/classroom/myfiles/GEMmaker_runs/GEMprep/bin/normalize.py GEMmaker.GEM.TPM.human.txt --quantile #Quantile normalize
     
+## 
 ## Analyzing a GEM
+### Now, we will perform a downstream analysis on our GEM.
