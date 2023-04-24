@@ -4,4 +4,4 @@ Getting started in repositories, storing ideas and resources.
 ## Goals for my future:
 - [ ] Go to graduate school
 - [ ] Continue my bioinformatics learning journey
-- [ ] Teach at a college level in something I'm passionate about! :joy:
+- [ ] Teach at a college level in something I'm passionate about! :smile:
