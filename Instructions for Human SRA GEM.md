@@ -1,33 +1,35 @@
 # Lab Overview
-The experimental experince of RNA-seq processing can be extremely complex, and take up a lot of space depending on the data being analyzed. The use of the GEMmaker program is critical, as it allows the creation of a complex workflow in massive-scale RNA-seq analyses. The GEMmaker program will construct GEMs, Gene Expression count Matrices, which can show expression levels, unique reads, and various other useful experimental data. In order to do this, it is necessary to use SRA data. The SRA, Sequence Read Archive, is the **largest publicy available repository of high-throughput sequenceing data**. In this lab, we will aim to use human SRA experiments and the human genome to create a GEM, and then process the GEM and analyze our findings.
+The experimental experince of RNA-seq processing can be extremely complex, and take up a lot of space depending on the data being analyzed. The use of the GEMmaker program is critical, as it allows the creation of a complex workflow in massive-scale RNA-seq analyses. The GEMmaker program will construct GEMs, Gene Expression count Matrices, which can show expression levels, unique reads, and various other useful experimental data. In order to do this, it is necessary to use SRA data. The SRA, Sequence Read Archive, is the **largest publicy available repository of high-throughput sequenceing data**. In this lab, we will aim to use human SRA experiments and the human genome to create GEMs, and then process the GEMs and analyze our findings. We will be using DNA-seq for our analysis, to identify differentially expressed genes in the Autism Purkinje neurons vs. the control Purkinje neurons, to attempt to identify genes that may contribute to the defects to Purkinje neurons that result in ASD behavior.
 
 # Learning Objectives
 - [ ] Understand the concept of GEM creation, including the necessary software to create a GEM
 - [ ] Learn the processes that can be done to GEMs in order to analyze their data
 - [ ] Analyze a downstream workflow of your created GEM
+- [ ] Learn about austism spectrum disorder and the differences in Purkinje neurons between ASD patients and control patients
 
 # Instructions for Human SRA GEM
 **The overall goal of this project is to create a GEM from Human SRA files, and then normalize and analyze it**
 
 First, research SRA experiments from the human genome within the NCBI sequence read archive. Some SRA experiments may have more than one run, all from the same study, which makes selections easier.
 
-The Identified study below (SRX000001) resulted in 10 different runs. **For simplicity, the first 3 runs will be used to make the GEM**, however further research can be done using all runs.
+The Identified study below (PRJNA869106) had approximately 12 autism SRA uploads and 24 control uploads. **For simplicity, the table below lists the first 5 runs from each conditions which will be used to make the GEMs**, however further research can be done using all runs. The study involves looking at Purkinje neurons, which are located in the cerebral cortex of the brain. These neurons, when defected, have been discovered to cause system-wide autism spectrum disorder behavioral presentation. Using the transcriptomic analyzed human postmortem Purkinje neurons, we will assemble a control GEM and a autism GEM and use downstream analysis to compare the expression of the two.
 
-| Study | Run Identifier | Description |
+| Project Identifier | Run Identifier | Description |
 | :-----------: | :-----------: | :-----------: |
-| SRX000001 | SRR000021 | Paired-end mapping reveals extensive structural variation in the human genome |
-| SRX000001 | SRR000026 | Paired-end mapping reveals extensive structural variation in the human genome |
-| SRX000001 | SRR000027 | Paired-end mapping reveals extensive structural variation in the human genome |
-| SRX000001 | SRR000034 | Paired-end mapping reveals extensive structural variation in the human genome |
-| SRX000001 | SRR000045 | Paired-end mapping reveals extensive structural variation in the human genome |
-| SRX000001 | SRR000054 | Paired-end mapping reveals extensive structural variation in the human genome |
-| SRX000001 | SRR000059 | Paired-end mapping reveals extensive structural variation in the human genome |
-| SRX000001 | SRR000063 | Paired-end mapping reveals extensive structural variation in the human genome |
-| SRX000001 | SRR000065 | Paired-end mapping reveals extensive structural variation in the human genome |
+| PRJNA869106 | SRX17045810 | Control; Transcriptomic analysis of isolated human postmortem Purkinje neurons implicates developmental organization/connectivity, extracellular matrix organization, calcium ion response, immune function and signaling alterations in autism spectrum disorders |
+| PRJNA869106 | SRX17045808 | Control; Transcriptomic analysis of isolated human postmortem Purkinje neurons implicates developmental organization/connectivity, extracellular matrix organization, calcium ion response, immune function and signaling alterations in autism spectrum disorders |
+| PRJNA869106 | SRX17045807 | Control; Transcriptomic analysis of isolated human postmortem Purkinje neurons implicates developmental organization/connectivity, extracellular matrix organization, calcium ion response, immune function and signaling alterations in autism spectrum disorders |
+| PRJNA869106 | SRX17045804 | Control; Transcriptomic analysis of isolated human postmortem Purkinje neurons implicates developmental organization/connectivity, extracellular matrix organization, calcium ion response, immune function and signaling alterations in autism spectrum disorders |
+| PRJNA869106 | SRX17045802 | Control; Transcriptomic analysis of isolated human postmortem Purkinje neurons implicates developmental organization/connectivity, extracellular matrix organization, calcium ion response, immune function and signaling alterations in autism spectrum disorders |
+| PRJNA869106 | SRX17045798 | Autism; Transcriptomic analysis of isolated human postmortem Purkinje neurons implicates developmental organization/connectivity, extracellular matrix organization, calcium ion response, immune function and signaling alterations in autism spectrum disorders |
+| PRJNA869106 | SRX17045799 | Autism; Transcriptomic analysis of isolated human postmortem Purkinje neurons implicates developmental organization/connectivity, extracellular matrix organization, calcium ion response, immune function and signaling alterations in autism spectrum disorders |
+| PRJNA869106 | SRX17045800 | Autism; Transcriptomic analysis of isolated human postmortem Purkinje neurons implicates developmental organization/connectivity, extracellular matrix organization, calcium ion response, immune function and signaling alterations in autism spectrum disorder |
+| PRJNA869106 | SRX17045801 | Autism; Transcriptomic analysis of isolated human postmortem Purkinje neurons implicates developmental organization/connectivity, extracellular matrix organization, calcium ion response, immune function and signaling alterations in autism spectrum disorder |
+| PRJNA869106 | SRX17045812 | Autism; Transcriptomic analysis of isolated human postmortem Purkinje neurons implicates developmental organization/connectivity, extracellular matrix organization, calcium ion response, immune function and signaling alterations in autism spectrum disorder |
 
 
 ## 
-## Creating a GEM
+## Creating the Autism and Control GEMs
 
 1. Next, in order to utilize the SRA experiment into a GEM, there are a few programs that must be installed:
     
@@ -97,31 +99,33 @@ The Identified study below (SRX000001) resulted in 10 different runs. **For simp
         
         -cd reports #look for a QC analysis of the SRA files
 
-3. Now, let's build the *Homo Sapiens* GEM. To start, the complete human cDNA genome must be downloaded. 
-    1. Download the human genome: wget Homo_sapiens.GRCh38.cdna.all.fa.gz
+### Now, let's build the Autism GEM. To start, the complete human cDNA genome must be downloaded. 
+1. Download the human genome: wget Homo_sapiens.GRCh38.cdna.all.fa.gz
     
-        -gunzip Homo_sapiens.GRCh38.cdna.all.fa #unzip the file
+    -gunzip Homo_sapiens.GRCh38.cdna.all.fa #unzip the file
         
     2. Use singularity to index the file, and name the indexed file with *.indexed* for differentiation purposes 
     
         -singularity exec -B ${PWD} https://depot.galaxyproject.org/singularity/kallisto:0.46.2--h4f7b962_1 kallisto index -i Homo_sapiens.GRCh38.cdna.all.fa.indexed Homo_sapiens.GRCh38.cdna.all.fa
         
-4. Input in the selected SRA run experiment identifiers.
+2. Input in the selected SRA run experiment identifiers.
 
-    - nano SRAs.txt #create a text file
+    - nano SRAsAutism.txt #create a text file
 
-    - SRR000021
-    SRR000021
-    SRR000021 #input the SRR identifiers of the chosen individual runs
+    - SRX17045798
+    SRX17045799
+    SRX17045800
+    SRX17045801
+    SRX17045812 #input the SRR identifiers of the chosen individual runs
     
-5. Build the GEM. GEMmaker used NCBI to access the needed datasets and runs nextflow. Results will be seen in the **results directory**. If wanting to process the other runs, the process can be changed by altering the experiment ID's.
+3. Build the GEM. GEMmaker used NCBI to access the needed datasets and runs nextflow. Results will be seen in the **results directory**. If wanting to process the other runs, the process can be changed by altering the experiment ID's.
 
     -nextflow run systemsgenetics/gemmaker -profile singularity \
 --pipeline kallisto \
 --kallisto_index_path Homo_sapiens.GRCh38.cdna.all.fa.indexed \
---sras SRAs.txt
+--sras SRAsAutism.txt
 
-6. Locate your created GEM
+4. Locate your created GEM
 
     -cd results
     
@@ -129,7 +133,35 @@ The Identified study below (SRX000001) resulted in 10 different runs. **For simp
     
     -ls
     
-    -head GEMmaker.GEM.TPM.human.txt
+    -head GEMmaker.GEM.AUTISM.human.txt
+    
+### Now, let's build the Control GEM.
+1. Input in the selected SRA run experiment identifiers.
+
+    - nano SRAsControl.txt #create a text file
+
+    - SRX17045810
+    SRX17045808
+    SRX17045807
+    SRX17045804
+    SRX17045802 #input the SRR identifiers of the chosen individual runs
+
+2. Build the GEM. GEMmaker used NCBI to access the needed datasets and runs nextflow. Results will be seen in the **results directory**. If wanting to process the other runs, the process can be changed by altering the experiment ID's. We won't need to download the *Homo Sapiens* genome again as we already have it to use from the Autism GEM.
+
+    -nextflow run systemsgenetics/gemmaker -profile singularity \
+--pipeline kallisto \
+--kallisto_index_path Homo_sapiens.GRCh38.cdna.all.fa.indexed \
+--sras SRAsControl.txt
+
+3. Locate your created GEM
+
+    -cd results
+    
+    -cd GEMs
+    
+    -ls
+    
+    -head GEMmaker.GEM.CONTROL.human.txt
 
 ## 
 ## Processing a GEM
@@ -150,12 +182,131 @@ The Identified study below (SRX000001) resulted in 10 different runs. **For simp
 
     -cd GEMprep
     
-4. Now, use the cloned GEM information to prepare your GEM for analysis. *If we were comparing multiple gems, then there would be an additional merge step* python ~/Desktop/classroom/myfiles/GEMmaker_runs/GEMprep/bin/merge.py {gem1} {gem2} *using the GEMprep software*
+4. Now, use the cloned GEM information to prepare your GEM for analysis. *If we were comparing multiple gems, then there would be an additional merge step* python ~/Desktop/classroom/myfiles/GEMmaker_runs/GEMprep/bin/merge.py {gem1} {gem2} *using the GEMprep software*. The below steps prep the GEMs for any analysis that could be chosen, but different analyses could require more preprocessing.
 
-    -python ~/Desktop/classroom/myfiles/GEMmaker_runs/GEMprep/bin/normalize.py GEMmaker.GEM.TPM.human.txt --log2 #Log2 transform your GEM
+    -python ~/Desktop/classroom/myfiles/GEMmaker_runs/GEMprep/bin/merge.py GEMmaker.GEM.AUTISM.human.txt GEMmaker.GEM.CONTROL.human.txt merged-autism-control-gem.txt
     
-    -python ~/Desktop/classroom/myfiles/GEMmaker_runs/GEMprep/bin/normalize.py GEMmaker.GEM.TPM.human.txt --quantile #Quantile normalize
+    -python ~/Desktop/classroom/myfiles/GEMmaker_runs/GEMprep/bin/normalize.py merged-autism-control-gem.txt --log2 #Log2 transform your GEM
+    
+    -python ~/Desktop/classroom/myfiles/GEMmaker_runs/GEMprep/bin/normalize.py merged-autism-control-gem.txt --quantile #Quantile normalize
+    
+ 
     
 ## 
 ## Analyzing a GEM
-### Now, we will perform a downstream analysis on our GEM.
+### Now, we will perform a downstream analysis on our GEM. The analytic technique we will be using is DESeq2, in order to find DEGS, differentially expressed genes.
+
+### Processing our GEM for DESeq2 analysis
+1. First, we will convert RSEM RNA-seq values into integers
+
+    cat merged-autism-control-gem.txt | sed -e 's/\.[0-9]*//g' -e 's/ *$//' > merged-autism-control-gem-integer.txt
+
+2. Next, we will remove duplicate gene rows and dashes, and convert to comma seperated again
+
+    -cat merged-autism-control-gem-integer.txt | awk '!a[$1]++' > merged-autism-control-gem-integer-unique.txt #removes duplicates
+    
+    -cat merged-autism-control-gem-integer-unique.txt | sed 's/-/_/g' > merged-autism-control-gem-clean.txt
+    
+    -cat merged-autism-control-gem-clean.txt | sed 's/\s/,/g' >  merged-autism-control-gem-clean.csv
+
+3. Next, convert to dashes, add necessary DESeq2 labels and header row, in order for the R code to recognize certain areas in the GEM
+
+    -cat merged-autism-control.labels.txt| sed 's/-/_/g' >  merged-autism-control-dash.labels.txt #convert to dashes
+    
+    -cat merged-autism-control-dash.labels.txt | sed 's/\s/,/g' | sed 's/$/,HUMAN_AUTISM_CONTROL/' > merged-autism-control.comparison.tmp #Add labels
+    
+    -cat merged-autism-control.comparison.tmp | sed 's/sample,label,HUMAN_AUTISM_CONTROL/Sample,Group,Comparison/' > merged-autism-control.comparison.csv #Add header row
+
+
+
+
+### Starting our analysis
+1. First, we will install the DESeq2 using the following **R code in the R program**.
+
+    -if (!require("BiocManager", quietly = TRUE))
+install.packages("BiocManager") 
+BiocManager::install("DESeq2")
+
+    -a #updates all downloaded software, useful when operating within a directory which will save progres, prevents further repeat downloading and saves time
+
+    -library(DESeq2)
+    
+2. Now, we will set our working directory. This will enable all generated results through R code to be sent to the correct directory with the previous work.
+
+    -setwd("~/Desktop/classroom/myfiles/GEMmaker_runs")
+
+3. Now, we will enter a number of functions to prep our DESeq2 run and define our terms
+
+    #enter a function to extract a sub-matric of counts for each group
+    -subgem <- function(gem, anot, group ){
+  datalist = list()
+  subanot = subset(anot, Comparison == group)
+  for (id in subanot$Sample) {
+    ind = which(colnames(gem) == id)
+    genes = gem[0]
+    exp = gem[,ind]
+    datalist[[id]] <- exp
+  }
+  subcounts = cbind(genes, datalist)
+  return(subcounts)
+}
+
+    #Enter a function to extract a subset of the sample annotation matrix for each group
+    -subanot <- function(anot, group){
+  datalist = list()
+  print(str(group))
+  subanot = subset(anot, Comparison == group)
+  print(str(subanot))
+  return(subanot)
+}
+
+    #Enter function to run DESeq2
+    -run_deseq <- function(counts, annotation){
+  dds <- DESeqDataSetFromMatrix(countData = counts,
+                                colData = annotation,
+                                design = ~ Group)
+ #Filter and normalize genes with low total counts across all samples (Edit as needed): 
+  dds <- dds[rowSums(counts(dds)) >= 50,]
+  dds <- DESeq(dds)
+  norm = fpm(dds)
+#Sort the columns in the FPM data frame (Edit as needed): 
+  conditionA = which(annotation[2] == "AUTISM_HUMAN")  #EDIT
+  conditionB = which(annotation[2] == "CONTROL_HUMAN")  #EDIT
+  norm = subset(norm, select=c(conditionA, conditionB))
+  print(str(norm))
+#Retrieve the results (Edit groupIDs as needed): 
+  res <- results(dds, contrast=c("Group", "AUTISM_HUMAN", "CONTROL_HUMAN"))
+  print(summary(res))
+  res <- cbind(res, norm) # Add FPM values to results for easy visualization
+  resultsNames(dds)
+  return(res)
+
+    -#Enter a function to print results to a file:
+main <- function(countfile, anotfile, outfile){
+  outname = outfile
+  counts = read.delim(countfile, sep=',', header=TRUE, row.names='Hugo_Symbol') #EDIT
+  samples = read.delim(anotfile, sep=',', row.names = NULL, check.names=FALSE)
+  groups = unique(samples$Comparison)
+  for (t in groups){
+    subcounts = subgem(counts, samples, t)
+    subannotation = subanot(samples, t)
+    results = run_deseq(subcounts, subannotation)
+    #Filter and sort results table
+    f_results = subset(results, padj < 0.05)
+    o_results = f_results[order(f_results$padj),]
+    write.csv(o_results, outname, row.names = TRUE)
+  }
+  return(results)
+}
+
+4. Run analysis with the input file (The created merged Autism and control GEM, and the comparison GEM created)
+    
+    -main('merged-autism-control-gem.csv', 'merged-autism-control-gem.comparison.csv', 'human-autism-control-degs-tab-delim.csv')
+
+    -Head human-autism-control-degs.csv | awk -F ',' '{print $1,$2,$3,$4,$5,$6,$7}' OFS=, > human-autism-control-degs-tab-delim.csv #print the specific needed columns and convert to tab-deliminated
+    
+5. The various listed genes in the first column of the outputted file can be compared using information such as the resulting log2FoldChange scores to determine the change in expression.
+
+
+##
+## Congratulations! You have successfully created a GEM from prexisting RNA-seq data, completed multiple processing steps, and analyzed the results of a comparison between a control and Autism condition for Purkinje cells!
