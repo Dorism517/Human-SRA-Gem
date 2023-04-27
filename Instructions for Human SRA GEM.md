@@ -28,6 +28,15 @@ The Identified study below (PRJNA869106) had approximately 12 autism SRA uploads
 | PRJNA869106 | SRX17045812 | Autism; Transcriptomic analysis of isolated human postmortem Purkinje neurons implicates developmental organization/connectivity, extracellular matrix organization, calcium ion response, immune function and signaling alterations in autism spectrum disorder |
 
 
+##
+## Accessing Palmetto on Demand *(or your chosen cluster)*
+
+1. Let's open up a Palmetto on Demand node with sufficient 
+
+    -https://openod.palmetto.clemson.edu/ #go to palmetto on demand
+    
+    -#select interactive sessions, and open Rstudio Server + Spark, to have an open R session and terminal at the same time
+
 ## 
 ## Creating the Autism and Control GEMs
 
@@ -64,6 +73,7 @@ The Identified study below (PRJNA869106) had approximately 12 autism SRA uploads
         -source ~/.bashrc #load the changes to your path
         
         -go #check if GO software is successfully installed
+        
     3. Install **singularity container software**; *virtual containers of software environments*
         
         -git clone https://github.com/sylabs/singularity.git
@@ -310,3 +320,7 @@ main <- function(countfile, anotfile, outfile){
 
 ##
 ## Congratulations! You have successfully created a GEM from prexisting RNA-seq data, completed multiple processing steps, and analyzed the results of a comparison between a control and Autism condition for Purkinje cells!
+
+Take some time to look at your results. Famililarize yourself with the data you have recieved and what it means for your comparison. Let's take a step back and refresh what we were aiming to see. The Purkinje cells in autism are expected to be defective and mutated, which has been seen to cause ASD like behavior. The comparison we have developed will allow us to look at the genes, the same genes for both autism and control patients, and look at differences between them in the two different conditions. This will allow us to identify genes that can be possibly responsible for defective Purkinje cells and ASD behavior in the Autism condition.
+
+    1. Go through the different headers and identify what each piece of information represents, and pick about 10 highly differentially expressed genes. Submit a paper about the known functions of each gene and an assumption for its high expression in the Autism condition, and its possible affect in the Autism condition.
