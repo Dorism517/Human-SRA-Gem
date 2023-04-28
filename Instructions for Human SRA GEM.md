@@ -109,7 +109,7 @@ The Identified study below (PRJNA869106) had approximately 12 autism SRA uploads
         
         cd GEMmaker_runs
 ~~~      
-    2. Now, within your GEM working directory, run a test on GEMmaker. *The goal of this is to see a count of TMP gene expression matrix in the results section. As it is a fake genome and run just to test the program, the resulting GEMs will be very small, which can be seen using the command* ls -l *to list the line count/size.*
+3. Now, within your GEM working directory, run a test on GEMmaker. *The goal of this is to see a count of TMP gene expression matrix in the results section. As it is a fake genome and run just to test the program, the resulting GEMs will be very small, which can be seen using the command* ls -l *to list the line count/size.*
 ~~~      
         nextflow run systemsgenetics/gemmaker -profile test,singularity
         
@@ -124,11 +124,11 @@ The Identified study below (PRJNA869106) had approximately 12 autism SRA uploads
 ~~~    
     gunzip Homo_sapiens.GRCh38.cdna.all.fa #unzip the file
 ~~~        
-    2. Use singularity to index the file, and name the indexed file with *.indexed* for differentiation purposes 
+2. Use singularity to index the file, and name the indexed file with *.indexed* for differentiation purposes 
 ~~~    
         singularity exec -B ${PWD} https://depot.galaxyproject.org/singularity/kallisto:0.46.2--h4f7b962_1 kallisto index -i Homo_sapiens.GRCh38.cdna.all.fa.indexed Homo_sapiens.GRCh38.cdna.all.fa
 ~~~        
-2. Input in the selected SRA run experiment identifiers.
+3. Input in the selected SRA run experiment identifiers.
 ~~~
     nano SRAsAutism.txt #create a text file
 
