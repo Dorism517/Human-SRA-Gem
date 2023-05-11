@@ -1,5 +1,5 @@
 # Hello!
-### **Welcome to my repository.!**
+### **Welcome to my repository!**
 This repository was created as part of a medical bioinformatics project to combine learned knowledge.
 ## What you should learn when using my code to make a GEM out of Human SRA data:
 - [ ] Understand the concept of GEM creation, including the necessary software to create a GEM
