@@ -8,3 +8,4 @@ This repository was created as part of a medical bioinformatics project to combi
 - [ ] Learn about austism spectrum disorder and the differences in Purkinje neurons between ASD patients and control patients
 - [ ] Learn more about coding! :)
 
+Click the "Instructions for Human SRA GEM.md" to get started.
