@@ -1,5 +1,5 @@
 # Lab Overview
-The experimental experince of RNA-seq processing can be extremely complex, and take up a lot of space depending on the data being analyzed. The use of the GEMmaker program is critical, as it allows the creation of a complex workflow in massive-scale RNA-seq analyses. The GEMmaker program will construct GEMs, Gene Expression count Matrices, which can show expression levels, unique reads, and various other useful experimental data. In order to do this, it is necessary to use SRA data. The SRA, Sequence Read Archive, is the **largest publicy available repository of high-throughput sequenceing data**. In this lab, we will aim to use human SRA experiments and the human genome to create GEMs, and then process the GEMs and analyze our findings. We will be using DNA-seq for our analysis, to identify differentially expressed genes in the Autism Purkinje neurons vs. the control Purkinje neurons, to attempt to identify genes that may contribute to the defects to Purkinje neurons that result in ASD behavior.
+The experimental experience of RNA-seq processing can be highly complex and take up a lot of space, depending on the data being analyzed. The use of the GEMmaker program is critical, as it allows the creation of a complex workflow in massive-scale RNA-seq analyses. The GEMmaker program will construct GEMs (Gene Expression count Matrices) that can show expression levels, unique reads, and other valuable experimental data. To do this, it is necessary to use SRA data. The SRA, Sequence Read Archive, is the **largest publicly available repository of high-throughput sequencing data**. In this lab, we will aim to use human SRA experiments and the human genome to create GEMs, then process the GEMs and analyze our findings. We will use DNA-seq to identify differentially expressed genes in the Autism Purkinje neurons vs. the control Purkinje neuron. We will attempt to identify genes that may contribute to the defects in Purkinje neurons that result in ASD behavior.
 
 # Learning Objectives
 - [ ] Understand the concept of GEM creation, including the necessary software to create a GEM
@@ -12,7 +12,7 @@ The experimental experince of RNA-seq processing can be extremely complex, and t
 
 First, research SRA experiments from the human genome within the NCBI sequence read archive. Some SRA experiments may have more than one run, all from the same study, which makes selections easier.
 
-The Identified study below (PRJNA869106) had approximately 12 autism SRA uploads and 24 control uploads. **For simplicity, the table below lists the first 5 runs from each conditions which will be used to make the GEMs**, however further research can be done using all runs. The study involves looking at Purkinje neurons, which are located in the cerebral cortex of the brain. These neurons, when defected, have been discovered to cause system-wide autism spectrum disorder behavioral presentation. Using the transcriptomic analyzed human postmortem Purkinje neurons, we will assemble a control GEM and a autism GEM and use downstream analysis to compare the expression of the two.
+The Identified study below (PRJNA869106) had approximately 12 autism SRA uploads and 24 control uploads. **For simplicity, the table below lists the first 5 runs from each condition that will be used to make the GEMs**; however, further research can be done using all runs. The study involves looking at Purkinje neurons, which are located in the cerebral cortex of the brain. When defective, these neurons been discovered to cause system-wide autism spectrum disorder behavioral presentation. Using the transcriptomic analyzed human postmortem Purkinje neurons, we will assemble a control GEM and an autism GEM and use downstream analysis to compare the expression of the two.
 
 | Project Identifier | Run Identifier | Description |
 | :-----------: | :-----------: | :-----------: |
@@ -99,7 +99,7 @@ The Identified study below (PRJNA869106) had approximately 12 autism SRA uploads
         singularity #test if singularity is successfully installed
 ~~~
     
-2. Now that the necessary software is installed, GEMmaker can utilize these programs to run. It's important to create a working directory for GEMmaker, and test it. 
+2. Now that the necessary software is installed, GEMmaker can utilize these programs to run. It's essential to create a working directory for GEMmaker and test it. 
     1. Create a working directory, for example called GEMmaker_runs. For this labs example purposes, this directory will be located in ~/Desktop/classroom/myfiles/GEMmaker_runs
 
 ~~~
@@ -109,7 +109,7 @@ The Identified study below (PRJNA869106) had approximately 12 autism SRA uploads
         
         cd GEMmaker_runs
 ~~~      
-3. Now, within your GEM working directory, run a test on GEMmaker. *The goal of this is to see a count of TMP gene expression matrix in the results section. As it is a fake genome and run just to test the program, the resulting GEMs will be very small, which can be seen using the command* ls -l *to list the line count/size.*
+3. Now, within your GEM working directory, run a test on GEMmaker. *This aims to see a count of TMP gene expression matrix in the results section. As it is an artificial genome run just to test the program, the resulting GEMs will be very small, which can be seen using the command* ls -l *to list the line count/size.*
 ~~~      
         nextflow run systemsgenetics/gemmaker -profile test,singularity
         
@@ -138,7 +138,7 @@ The Identified study below (PRJNA869106) had approximately 12 autism SRA uploads
     SRX17045801
     SRX17045812 #input the SRR identifiers of the chosen individual runs
 ~~~    
-3. Build the GEM. GEMmaker used NCBI to access the needed datasets and runs nextflow. Results will be seen in the **results directory**. If wanting to process the other runs, the process can be changed by altering the experiment ID's.
+3. Build the GEM. GEMmaker used NCBI to access the needed datasets and runs the nextflow program. Results will be seen in the **results directory**. If wanting to process the other runs, the process can be changed by altering the experiment ID.
 ~~~
     nextflow run systemsgenetics/gemmaker -profile singularity \
 --pipeline kallisto \
@@ -166,7 +166,7 @@ The Identified study below (PRJNA869106) had approximately 12 autism SRA uploads
     SRX17045804
     SRX17045802 #input the SRR identifiers of the chosen individual runs
 ~~~
-2. Build the GEM. GEMmaker used NCBI to access the needed datasets and runs nextflow. Results will be seen in the **results directory**. If wanting to process the other runs, the process can be changed by altering the experiment ID's. We won't need to download the *Homo Sapiens* genome again as we already have it to use from the Autism GEM.
+2. Build the GEM. GEMmaker used NCBI to access the needed datasets and runs the nextflow program. Results will be seen in the **results directory**. If wanting to process the other runs, the process can be changed by altering the experiment ID. We won't need to download the *Homo Sapiens* genome again as we already have it to use from the Autism GEM.
 ~~~
     nextflow run systemsgenetics/gemmaker -profile singularity \
 --pipeline kallisto \
@@ -203,7 +203,7 @@ The Identified study below (PRJNA869106) had approximately 12 autism SRA uploads
 
     cd GEMprep
 ~~~   
-4. Now, use the cloned GEM information to prepare your GEM for analysis. *If we were comparing multiple gems, then there would be an additional merge step* python ~/Desktop/classroom/myfiles/GEMmaker_runs/GEMprep/bin/merge.py {gem1} {gem2} *using the GEMprep software*. The below steps prep the GEMs for any analysis that could be chosen, but different analyses could require more preprocessing.
+4. Now, use the cloned GEM information to prepare your GEM for analysis. *If we were comparing multiple gems, there would be an additional merge step* python ~/Desktop/classroom/myfiles/GEMmaker_runs/GEMprep/bin/merge.py {gem1} {gem2} *using the GEMprep software*. The below steps prep the GEMs for any analysis that could be chosen, but different studies could require more preprocessing.
 ~~~
     python ~/Desktop/classroom/myfiles/GEMmaker_runs/GEMprep/bin/merge.py GEMmaker.GEM.AUTISM.human.txt GEMmaker.GEM.CONTROL.human.txt merged-autism-control-gem.txt
     
@@ -331,12 +331,12 @@ main <- function(countfile, anotfile, outfile){
 
 ##
 ## Congratulations!
-### You have successfully created a GEM from prexisting RNA-seq data, completed multiple processing steps, and have created results you can now analyze in a comparison between a control and Autism condition for Purkinje cells!
+### You have successfully created a GEM from pre-existing RNA-seq data, completed multiple processing steps, and produced results you can now analyze and compare between a control and Autism condition for Purkinje cells!
 
-Take some time to look at your results. Famililarize yourself with the data you have recieved and what it means for your comparison. Let's take a step back and refresh what we were aiming to see. The Purkinje cells in autism are expected to be defective and mutated, which has been seen to cause ASD like behavior. The comparison we have developed will allow us to look at the genes, the same genes for both autism and control patients, and look at differences between them in the two different conditions. This will allow us to identify genes that can be possibly responsible for defective Purkinje cells and ASD behavior in the Autism condition.
+Take some time to look at your results. Familiarize yourself with the data you have received and what it means for your comparison. Let's step back and refresh what we were aiming to see. The Purkinje cells in autism are expected to be defective and mutated, which has been seen to cause ASD-like behavior. The comparison we have developed will allow us to look at the genes, the same genes for both autism and control patients, and look at differences between them in the two different conditions. This will allow us to identify genes possibly responsible for defective Purkinje cells and ASD behavior in the Autism condition.
 
     1. Go through the different headers and identify what each piece of information represents
     
-    2.Pick about 10 highly differentially expressed genes
+    2. Pick about 10 highly differentially expressed genes
     
-    3.Submit a paper about the known functions of each gene and an assumption for its high expression in the Autism condition, and its possible affect in the Autism condition.
+    3. Submit a paper about the known functions of each gene and an assumption for its high expression in the Autism condition and its possible effect in the Autism condition.
